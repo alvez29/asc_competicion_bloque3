@@ -41,7 +41,7 @@ def calcular_conjunto_b(vectores_peso,distancias, t):
         idx = np.array(distancias[i]).argsort()[:t]
         aux = []
         for j in range(len(idx)):
-            aux.append(vectores_peso[idx[j]])
+            aux.append(idx[j])
         b_set.append(aux)
 
     return b_set        
@@ -135,22 +135,21 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
 
             #Mutación
 
-            vecinos_aleatorios = random.sample(conjunto_b[i], 3)
-            indices = []
-            for vecino_aleatorio in vecinos_aleatorios:
-                indices.append(vectores_peso.index(vecino_aleatorio))
+            indice_vecinos_aleatorios = random.sample(conjunto_b[i], 3)
             vecinos_aleatorios = []
-            for indice in indices:
+            
+            for indice in indice_vecinos_aleatorios:
                 vecinos_aleatorios.append(poblacion[indice])
             
             vector_mutante = np.array(vecinos_aleatorios[0]) + 0.5 * (np.array(vecinos_aleatorios[1]) - np.array(vecinos_aleatorios[2]))
             vector_mutante = vector_mutante.tolist()
             
+            #Recortamos los limites
             for vm in range(len(vector_mutante)):
-                if vector_mutante[vm] > 1:
-                    vector_mutante[vm] = 1
-                if vector_mutante[vm] < 0:
-                    vector_mutante[vm] = 0
+                if vector_mutante[vm] > xu:
+                    vector_mutante[vm] = xu
+                if vector_mutante[vm] < xl:
+                    vector_mutante[vm] = xl
 
             #Cruce
             for u in range(len(individuo)):
@@ -166,9 +165,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
             #Actualización de z
             z = actualizar_z(eval_hijo, z)
 
-            indice_vecinos = []
-            for vecino in conjunto_b[i]:
-                indice_vecinos.append(vectores_peso.index(vecino))
+            indice_vecinos = conjunto_b[i]
 
             for indice_del_vecino in indice_vecinos:
                 gte_hijo = gte(hijo,vectores_peso[indice_del_vecino],z)
@@ -176,14 +173,18 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
                 if gte_hijo <= gte_vecino:
                     poblacion[indice_del_vecino] = hijo
 
-    puntos_grafica = []
-    for individuo in poblacion:
-        puntos_grafica.append(evaluar_individuo(individuo))
-    print(puntos_grafica) 
+            puntos_grafica = []
+            for individuo in poblacion:
+                puntos_grafica.append(evaluar_individuo(individuo))
+                f = open('puntos'+str(generacion)+'.txt', 'w')
+            for punto in puntos_grafica:
+                f.write(str(punto[0]) + ' ' + str(punto[1]) + '\n')
+            f.close()
+
                                 
     return puntos_grafica
 
-puntos = algoritmo_total(500, 300 , 0.25, 0, 1, 0.5)
+puntos = algoritmo_total(50, 300 , 0.2, 0, 1, 0.4)
 f = open('puntos.txt', 'w')
 for punto in puntos:
     f.write(str(punto[0]) + ' ' + str(punto[1]) + '\n')
