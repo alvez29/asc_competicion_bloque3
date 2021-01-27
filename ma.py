@@ -49,7 +49,7 @@ def calcular_conjunto_b(vectores_peso,distancias, t):
 def funct():
     return benchmarks.zdt3([1,1,1,1,1,0.5])
 
-#Calcular la población
+#Calcular la poblacion
 def inicializar_poblacion(n, seed):
     random.seed(seed)
     poblacion = []
@@ -61,7 +61,7 @@ def inicializar_poblacion(n, seed):
         poblacion.append(individuo)
     return poblacion
 
-#Evalua la población con la función zdt3
+#Evalua la poblacion con la funcion zdt3
 def evaluar_poblacion(poblacion):
     res = []
     for i in range(len(poblacion)):
