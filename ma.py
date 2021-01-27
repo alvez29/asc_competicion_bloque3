@@ -128,6 +128,8 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
     z = calcular_z(evaluaciones)
     print('El punto Z de referencia es: ' + str(z))
 
+    f = open('puntos.txt', 'w')
+
     for generacion in range(g):
         for i in range(n):
             individuo = poblacion[i]
@@ -173,19 +175,15 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
                 if gte_hijo <= gte_vecino:
                     poblacion[indice_del_vecino] = hijo
 
-            puntos_grafica = []
-            for individuo in poblacion:
-                puntos_grafica.append(evaluar_individuo(individuo))
-                f = open('puntos'+str(generacion)+'.txt', 'w')
-            for punto in puntos_grafica:
-                f.write(str(punto[0]) + ' ' + str(punto[1]) + '\n')
-            f.close()
+        
+        for individuo in poblacion:
+            punto = evaluar_individuo(individuo)
+            f.write(str(punto[0]) + ' ' + str(punto[1]) + ' 0.0' +'\n')
 
-                                
-    return puntos_grafica
+        print(str(z))
+    f.close()
+                           
+    return None
 
-puntos = algoritmo_total(50, 300 , 0.2, 0, 1, 0.4)
-f = open('puntos.txt', 'w')
-for punto in puntos:
-    f.write(str(punto[0]) + ' ' + str(punto[1]) + '\n')
-f.close()
+puntos = algoritmo_total(100, 100 , 0.2, 0, 1, 0.2)
+
