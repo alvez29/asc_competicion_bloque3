@@ -128,7 +128,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
     z = calcular_z(evaluaciones)
     print('El punto Z de referencia es: ' + str(z))
 
-    f = open('puntos.txt', 'w')
+    f = open('ma_all_p'+str(n)+'g'+str(g)+'_seed'+str(float(seed)).replace('.','')+'.out', 'w')
 
     for generacion in range(g):
         for i in range(n):
@@ -154,9 +154,10 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
                     vector_mutante[vm] = xl
 
             #Cruce
+            delta = random.randint(0, len(individuo))
             for u in range(len(individuo)):
                 aleatorio = random.random()
-                if aleatorio<=0.5:
+                if aleatorio<=0.5 or u == delta:
                     hijo.append(vector_mutante[u])
                 elif aleatorio>0.5:
                     hijo.append(individuo[u])
@@ -180,10 +181,20 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
             punto = evaluar_individuo(individuo)
             f.write(str(punto[0]) + ' ' + str(punto[1]) + ' 0.0' +'\n')
 
-        print(str(z))
-    f.close()
-                           
-    return None
+    f.close()    
 
-puntos = algoritmo_total(100, 100 , 0.2, 0, 1, 0.2)
+    f2 = open('ma_plot_p'+str(n)+'g'+str(g)+'_seed'+str(float(seed)).replace('.','')+'.out', 'w')
+    for evaluacion_final in evaluar_poblacion(poblacion):
+        f2.write(str(evaluacion_final[0]) +' '+ str(evaluacion_final[1])+'\n')
+    f2.close()
+    return poblacion
+
+i = 0.0
+while i <= 1 :
+    if(i.__round__(1) == 1):
+        algoritmo_total(200, 50 , 0.2, 0, 1, 0.99)
+    else:
+        algoritmo_total(200, 50 , 0.2, 0, 1, i.__round__(1))
+
+    i = i+0.1
 
