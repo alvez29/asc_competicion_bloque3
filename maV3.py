@@ -203,7 +203,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
             for dimension in range(len(hijo)):
                 #Probabilidad 1/30
                 if random.randint(1, 30) == 15:
-                    hijo[dimension] = hijo[dimension] + np.random.normal(loc=0, scale=1/20)
+                    hijo[dimension] = hijo[dimension] + random.gauss(mu=0, sigma=1/20)
 
                     if hijo[dimension] > xu:
                         hijo[dimension] = xu
@@ -213,7 +213,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
             #Evaluación del hijo
             eval_hijo = evaluar_individuo(hijo)
 
-            #Actualizar fichero ep
+            #Actualizar lista ep
             lista_ep = actualizar_ep(lista_ep, eval_hijo)
             
             #Actualización de z

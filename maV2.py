@@ -167,7 +167,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
             for dimension in range(len(hijo)):
                 #Probabilidad 1/30
                 if random.randint(1, 30) == 15:
-                    hijo[dimension] = hijo[dimension] + np.random.normal(loc=0, scale=1/20)
+                    hijo[dimension] = hijo[dimension] + random.gauss(mu=0, sigma=1/20)
 
                     if hijo[dimension] > xu:
                         hijo[dimension] = xu
@@ -189,7 +189,8 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
                 if gte_hijo <= gte_vecino:
                     poblacion[indice_del_vecino] = hijo
 
-        
+        print(z)
+
         for individuo in poblacion:
             punto = evaluar_individuo(individuo)
             f.write(str(punto[0]) + ' ' + str(punto[1]) + ' 0.0' +'\n')
@@ -202,12 +203,12 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
     f2.close()
     return poblacion
 
-i = 0.0
-while i <= 1 :
-    if(i.__round__(1) == 1):
-        algoritmo_total(100, 100 , 0.2, 0, 1, 0.99)
+wi = 0.0
+while wi <= 1 :
+    if(wi.__round__(1) == 1):
+        algoritmo_total(80, 50 , 0.2, 0, 1, 0.99)
     else:
-        algoritmo_total(100, 100 , 0.2, 0, 1, i.__round__(1))
+        algoritmo_total(80, 50 , 0.2, 0, 1, wi.__round__(1))
 
-    i = i+0.1
+    wi = wi+0.1
 
