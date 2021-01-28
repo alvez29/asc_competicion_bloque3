@@ -189,12 +189,13 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
     f2.close()
     return poblacion
 
-i = 0.0
+#Realiza el algoritmo para todas las semillas con paso 0.1
+wi = 0.0
 while i <= 1 :
-    if(i.__round__(1) == 1):
-        algoritmo_total(200, 50 , 0.2, 0, 1, 0.99)
+    if(wi.__round__(1) == 1):
+        algoritmo_total(49, 100 , 0.2, 0, 1, 0.99)
     else:
-        algoritmo_total(200, 50 , 0.2, 0, 1, i.__round__(1))
+        algoritmo_total(40, 100 , 0.2, 0, 1, wi.__round__(1))
 
-    i = i+0.1
+    wi = wi+0.1
 
