@@ -142,27 +142,28 @@ def domina(evaluado1, evaluado2):
         res = True    
     return res
 
-def inicializa_ep(eval_poblacion):
+def inicializa_ep(poblacion):
     res = []
-    for individuo in eval_poblacion:
+    eval_poblacion = evaluar_poblacion(poblacion)
+    for individuo in range(len(eval_poblacion)):
         es_dominante = True
-        for individuo_p in eval_poblacion:
-            if domina(individuo_p, individuo):
-                es_dominante = False
-                break
+        for individuo_p in range(len(eval_poblacion)):
+            if cumple_restriccion(poblacion[individuo_p]) == 0 and domina(eval_poblacion[individuo_p], eval_poblacion[individuo]):
+                    es_dominante = False
+                    break
         if es_dominante:
-            res.append(individuo)
+            res.append(eval_poblacion[individuo])
     return res
 
-def actualizar_ep(ep,hijo):
+def actualizar_ep(ep,hijo, full_hijo):
     res = ep
     contador = 0
     for punto in ep:
         if domina(punto, hijo):
             contador = contador + 1
-        if domina(hijo, punto):
+        if domina(hijo, punto) and cumple_restriccion(full_hijo) == 0 :
             res.remove(punto)
-    if contador == 0:
+    if contador == 0 and cumple_restriccion(full_hijo) == 0:
         res.append(hijo)
 
     return res
@@ -172,8 +173,8 @@ def cumple_restriccion(individuo):
     r1 = 0
     r2 = 0
     dim = len(individuo)
-    c1 = individuo[1] - (0.8 * individuo[0] * math.sin(6*math.pi*individuo[0] + ((2*math.pi)/dim))) - np.sign(0.5 * (1-individuo[0]) - (1 - individuo[0])**2)* math.sqrt(abs(0.5 * (1-individuo[0]) - (1 - individuo[0])**2))
-    c2 = individuo[3] - (0.8 * individuo[0] * math.sin(6*math.pi*individuo[0] + ((4*math.pi)/dim))) - np.sign(0.25 * math.sqrt(1-individuo[0]) -0.5 *(1-individuo[0]))* math.sqrt(abs(0.25 * math.sqrt(1-individuo[0]) -0.5 *(1-individuo[0])))
+    c1 = individuo[1] - (0.8 * individuo[0] * math.sin(6.0*math.pi*individuo[0] + ((2.0*math.pi)/dim))) - np.sign(0.5 * (1.0-individuo[0]) - (1.0 - individuo[0])**2.0)* math.sqrt(abs(0.5 * (1.0-individuo[0]) - (1.0 - individuo[0])**2.0))
+    c2 = individuo[3] - (0.8 * individuo[0] * math.sin(6.0*math.pi*individuo[0] + ((4.0*math.pi)/dim))) - np.sign(0.25 * math.sqrt(1.0-individuo[0]) -0.5 *(1.0-individuo[0]))* math.sqrt(abs(0.25 * math.sqrt(1.0-individuo[0]) -0.5 *(1.0-individuo[0])))
     if c1 < 0:
         r1 = abs(c1)
     if c2 < 0:
@@ -181,7 +182,6 @@ def cumple_restriccion(individuo):
 
     #Devuelve cuanto se alejan de 0
     return r1 + r2
-
 
 
 def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
@@ -205,7 +205,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
     print('Evaluaciones calculadas.')
     z = calcular_z(evaluaciones)
     print('El punto Z de referencia es: ' + str(z))
-    lista_ep = inicializa_ep(evaluaciones)
+    lista_ep = inicializa_ep(poblacion)
     f = open('ma4_all_p'+str(n)+'g'+str(g)+'_seed'+str(float(seed)).replace('.','')+'.out', 'w')
 
     for generacion in range(g):
@@ -266,7 +266,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
             eval_hijo = evaluar_individuo(hijo)
 
             #Actualizar lista ep
-            lista_ep = actualizar_ep(lista_ep, eval_hijo)
+            lista_ep = actualizar_ep(lista_ep, eval_hijo, hijo)
             
             #Actualización de z
             z = actualizar_z(eval_hijo, z)
@@ -289,10 +289,13 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
                     else:
                         if random.choice([0,1]) == 0:
                             poblacion[indice_del_vecino] = hijo
+                #Si uno cumple y el otro no
                 elif restriccion_hijo == 0 and restriccion_vecino > 0:
                     poblacion[indice_del_vecino] = hijo
+                #Si uno cumple y el otro no
                 elif restriccion_hijo > 0 and restriccion_vecino == 0:
                     poblacion[indice_del_vecino] = poblacion[indice_del_vecino]
+                #Ninguna la incumplen
                 else:
                     gte_hijo = gte(hijo,vectores_peso[indice_del_vecino],z)
                     gte_vecino = gte(poblacion[indice_del_vecino], vectores_peso[indice_del_vecino], z)
@@ -321,9 +324,9 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
 wi = 0.0
 while wi <= 1 :
     if(wi.__round__(1) == 1):
-        algoritmo_total(100, 100 , 0.2, -2, 2, 0.99)
+        algoritmo_total(40, 100 , 0.2, -2, 2, 0.99)
     else:
-        algoritmo_total(100, 100 , 0.2, -2, 2, wi.__round__(1))
+        algoritmo_total(40, 100 , 0.2, -2, 2, wi.__round__(1))
 
     wi = wi+0.1
 

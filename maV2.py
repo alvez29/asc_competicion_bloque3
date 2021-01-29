@@ -201,9 +201,9 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
 wi = 0.0
 while wi <= 1 :
     if(wi.__round__(1) == 1):
-        algoritmo_total(40, 100 , 0.2, 0, 1, 0.99)
+        algoritmo_total(100, 40 , 0.2, 0, 1, 0.99)
     else:
-        algoritmo_total(40, 100 , 0.2, 0, 1, wi.__round__(1))
+        algoritmo_total(100, 40 , 0.2, 0, 1, wi.__round__(1))
 
     wi = wi+0.1
 
