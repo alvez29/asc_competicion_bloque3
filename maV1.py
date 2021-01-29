@@ -45,9 +45,6 @@ def calcular_conjunto_b(vectores_peso,distancias, t):
         b_set.append(aux)
 
     return b_set        
-        
-def funct():
-    return benchmarks.zdt3([1,1,1,1,1,0.5])
 
 #Calcular la poblacion
 def inicializar_poblacion(n, seed):

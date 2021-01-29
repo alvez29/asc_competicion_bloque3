@@ -1,1 +1,2 @@
 - Algunos frentes no tiene ningún punto por el punto de referencia que está más alto que el ultimo punto.
+- Comentar las decisiones en la seleccion con restricciones
