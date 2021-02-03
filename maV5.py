@@ -58,7 +58,6 @@ def inicializar_poblacion(n, seed):
         poblacion.append(individuo)
     return poblacion
 
-#Evalua la poblacion con la funcion zdt3
 def evaluar_poblacion(poblacion):
     res = []
     for i in range(len(poblacion)):
@@ -269,15 +268,15 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
             indice_vecinos = conjunto_b[i]
 
             for indice_del_vecino in indice_vecinos:
-                gte_hijo = gte(hijo,vectores_peso[indice_del_vecino],z) + 1000000*cumple_restriccion(hijo)
-                gte_vecino = gte(poblacion[indice_del_vecino], vectores_peso[indice_del_vecino], z) + 1000000*cumple_restriccion(poblacion[indice_del_vecino])
+                gte_hijo = gte(hijo,vectores_peso[indice_del_vecino],z) + 1000000* cumple_restriccion(hijo)
+                gte_vecino = gte(poblacion[indice_del_vecino], vectores_peso[indice_del_vecino], z) - 1000000*cumple_restriccion(poblacion[indice_del_vecino])
                 if gte_hijo <= gte_vecino:
                     poblacion[indice_del_vecino] = hijo
 
         
         for individuo in poblacion:
             punto = evaluar_individuo(individuo)
-            f.write(str(punto[0]) + ' ' + str(punto[1]) + ' 0.0' +'\n')
+            f.write(str(punto[0]) + ' ' + str(punto[1]) + ' ' + str(cumple_restriccion(individuo))+ '\n')
 
     f.close()  
 
@@ -296,9 +295,9 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
 wi = 0.0
 while wi <= 1 :
     if(wi.__round__(1) == 1):
-        algoritmo_total(40, 100 , 0.2, -2, 2, 0.99)
+        algoritmo_total(100, 100 , 0.2, -2, 2, 0.99)
     else:
-        algoritmo_total(40, 100 , 0.2, -2, 2, wi.__round__(1))
+        algoritmo_total(100, 100 , 0.2, -2, 2, wi.__round__(1))
 
     wi = wi+0.1
 

@@ -249,7 +249,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
             #Mutación gaussiana
             for dimension in range(len(hijo)):
                 #Probabilidad 1/4
-                if random.randint(1, len(hijo)) == 1:
+                if random.randint(1, 2) == 1:
                     hijo[dimension] = hijo[dimension] + random.gauss(mu=0, sigma=1/20)
                     if dimension == 0:
                         if hijo[dimension] > 1:
@@ -304,7 +304,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
         
         for individuo in poblacion:
             punto = evaluar_individuo(individuo)
-            f.write(str(punto[0]) + ' ' + str(punto[1]) + ' 0.0' +'\n')
+            f.write(str(punto[0]) + ' ' + str(punto[1]) + ' ' + str(cumple_restriccion(individuo)) +'\n')
 
     f.close()  
 
@@ -324,9 +324,9 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
 wi = 0.0
 while wi <= 1 :
     if(wi.__round__(1) == 1):
-        algoritmo_total(40, 100 , 0.2, -2, 2, 0.99)
+        algoritmo_total(40, 250 , 0.2, -2, 2, 0.99)
     else:
-        algoritmo_total(40, 100 , 0.2, -2, 2, wi.__round__(1))
+        algoritmo_total(40, 250 , 0.2, -2, 2, wi.__round__(1))
 
     wi = wi+0.1
 

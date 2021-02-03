@@ -127,6 +127,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
 
     f = open('ma_all_p'+str(n)+'g'+str(g)+'_seed'+str(float(seed)).replace('.','')+'.out', 'w')
 
+    print('Iniciando el algoritmo...')
     for generacion in range(g):
         for i in range(n):
             individuo = poblacion[i]
@@ -184,6 +185,7 @@ def algoritmo_total(n, g, porcentaje_t, xl, xu, seed):
     for evaluacion_final in evaluar_poblacion(poblacion):
         f2.write(str(evaluacion_final[0]) +' '+ str(evaluacion_final[1])+'\n')
     f2.close()
+    print('Finalizado con éxito.')
     return poblacion
 
 #Realiza el algoritmo para todas las semillas con paso 0.1
